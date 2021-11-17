@@ -5,8 +5,8 @@ const connstring = process.env.DATABASE_URL || dbURI;
 const pool = new pg.Pool({
 	connectionString: connstring,
 	ssl:{rejectUnauthorized: false}
-})
-
+});
+  
 // database methods ----------------------------
 let dbMethods = {}; //create empty object
 

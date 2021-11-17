@@ -3,8 +3,7 @@ const db = require("./db.js");
 const router = express.Router();
 
 router.get("/blogposts", async function(req, res, next) {
-	
-	try{
+	try{  
 		let data = await db.getAllBlogPosts();
 		res.status(200).json(data.rows).end();
 	}
