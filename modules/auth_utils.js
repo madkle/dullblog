@@ -74,5 +74,12 @@ utils.verifyToken = function(token){
     //token ok
     return payload;
 };
+utils.verifyPassword = function(pswFromUser, hashFromDB, saltFromDB) {
+    hash = crypto.scryptSync(pswFromUser, saltFromDB, 64).toString("hex");
 
+    if (hash === hashFromDB) {
+        return true;
+    }
+    return false;
+}
 module.exports = utils;

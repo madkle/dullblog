@@ -1,8 +1,12 @@
 const express = require("express");
 const db = require("./db.js");
+const protect = require("./auth");
 const router = express.Router();
 
-router.get("/blogposts", async function(req, res, next) {
+router.get("/blogposts", protect, async function(req, res, next) {
+	
+	
+	
 	try{  
 		let data = await db.getAllBlogPosts();
 		res.status(200).json(data.rows).end();
@@ -12,9 +16,9 @@ router.get("/blogposts", async function(req, res, next) {
 	}
 });
 
-router.post("/blogposts", async function(req,res,next){
+router.post("/blogposts", protect, async function(req,res,next){
 	let updata = req.body;
-	let userid = 1; //must be changed when we implement users
+	let userid = res.locals.userid;
 
 	try{
 		let data = await db.createBlogPosts(updata.heading, updata.blogtext, userid);
@@ -30,11 +34,11 @@ router.post("/blogposts", async function(req,res,next){
 	}
 });
 
-router.delete("/blogposts", async function(req, res, next){
+router.delete("/blogposts", protect, async function(req, res, next){
 	let updata = req.body;
-
+	let userid = res.locals.userid;
 	try{
-		let data = await db.deleteBlogPosts(updata.id);
+		let data = await db.deleteBlogPosts(updata.id, userid);
 		if (data.rows.length > 0){
 			res.status(200).json({msg: "The blogpost was deleted successfully"}).end();
 		}
